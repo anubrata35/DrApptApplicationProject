@@ -1,0 +1,81 @@
+--User Login Table
+
+create table USERSIGNUP(
+PK_ID number(10) CONSTRAINT us_pk_id primary key,
+ROLL varchar2(10) CONSTRAINT us_nn_uc not null,
+FIRST_NAME varchar2(50),
+LAST_NAME varchar2(50),
+USER_ID varchar2(50) CONSTRAINT us_nn_usid not null,
+PASSWORD varchar2(20) CONSTRAINT us_nn_ps not null,
+GENDER varchar2(10),
+ADDRESS varchar2(100),
+LOCATION varchar2(50),
+BIRTH_DATE varchar2(50),
+PHONE_NUMBER number(12),
+EMAIL varchar2(50));
+
+create sequence USER_sequence start with 1 increment by 1;
+
+insert into USERSIGNUP(PK_ID, ROLL, FIRST_NAME, LAST_NAME, USER_ID, PASSWORD, GENDER, ADDRESS, LOCATION, BIRTH_DATE, PHONE_NUMBER, EMAIL) 
+values( USER_sequence.NEXTVAL, 'USER', 'Anubrata', 'Giri', 'anub24', 'anub1234', 'Male', '110, Goswami Para Road, Bally', 'Howrah', '14/09/94', 8272975759, 'girianubrata@gmail.com');
+
+commit;
+
+select * from usersignup;
+
+
+--Appointment Table
+
+create table TAPPOINTMENT_MANAGER(
+inc_id number(10) CONSTRAINT tm_pk_id primary key,
+USER_ID varchar2(50),
+patient_name varchar2(50),
+dr_name varchar2(50),
+booked_appt timestamp,
+patient_number number(10),
+fixappt_date date);
+
+create sequence appointmentIncrement_id start with 1 increment by 1;
+create sequence patientNumberSeq start with 1 increment by 1;
+
+select * from TAPPOINTMENT_MANAGER;
+
+select to_char( fixappt_date ,'YYYY-MM-dd') from TAPPOINTMENT_MANAGER; 
+select count(patient_name) from TAPPOINTMENT_MANAGER  where to_char( fixappt_date ,'YYYY-MM-dd') = '2017-07-19';
+
+--Dr Details Table
+
+create table DrDetails(
+dr_id number(10) CONSTRAINT dr_pk_id primary key,
+dr_name varchar2(50),
+appointment_day varchar2(50),
+appointment_time varchar2(50),
+dr_status varchar2(50),
+specialist_of varchar2(50),
+dr_chember varchar2(100),
+hospital_name varchar2(50),
+dr_language varchar2(50),
+profile_Picture blob,
+content_type varchar2(50));
+
+create sequence dr_id start with 1 increment by 1;
+
+select * from DrDetails;
+commit;
+
+insert into DrDetails(dr_id, dr_name, appointment_day, appointment_time, dr_status, specialist_of, dr_chember, hospital_name, dr_language, profile_Picture) 
+values(dr_id.NEXTVAL, '&DR_NAME', '&APPOINTMENT_DAY', '&APPOINTMENT_TIME', '&DR_STATUS', '&SPECIALIST_OF', '&DR_CHEMBER', '&HOSPITAL_NAME', '&LANGUAGE', NULL);
+
+commit;
+
+select max(patient_number) patient_number from TAPPOINTMENT_MANAGER
+where fixappt_date = to_date(sysdate, 'fxDD Month, YYYY');
+
+
+create table ADMINLOGIN
+(ADMIN_ID varchar2(20) constraint ad_id primary key,
+ADMIN_PASSWORD varchar2(20) constraint ad_ps not null);
+
+select * from adminlogin;
+
+insert into adminlogin values('admin', 'admin');
